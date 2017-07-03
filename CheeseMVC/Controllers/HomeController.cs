@@ -10,7 +10,7 @@ namespace CheeseMVC.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return Redirect("/cheese");
         }
 
         public IActionResult About()
