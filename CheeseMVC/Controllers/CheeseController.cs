@@ -10,7 +10,7 @@ namespace CheeseMVC.Controllers
 {
     public class CheeseController : Controller
     {
-        Dictionary<string, string> Cheeses = new Dictionary<string, string>();
+       static private Dictionary<string, string> Cheeses = new Dictionary<string, string>();
 
         // GET: /<controller>/
         public IActionResult Index()
