@@ -30,7 +30,30 @@ namespace CheeseMVC.Controllers
         [HttpPost]
         public IActionResult Add(string name, string description)
         {
+            if (String.IsNullOrEmpty(name))
+            {
+                return View();    
+            }
+
             Cheeses.Add(name, description);
+
+            return Redirect("/cheese");
+        }
+
+        [HttpGet]
+        public IActionResult Remove()
+        {
+
+            ViewBag.cheeses = Cheeses;
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Remove(string name)
+        {
+
+            Cheeses.Remove(name);
 
             return Redirect("/cheese");
         }
