@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using CheeseMVC.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,7 +11,7 @@ namespace CheeseMVC.Controllers
 {
     public class CheeseController : Controller
     {
-       static private Dictionary<string, string> Cheeses = new Dictionary<string, string>();
+       static private List<Cheese> Cheeses = new List<Cheese>();
 
         // GET: /<controller>/
         public IActionResult Index()
@@ -35,7 +36,12 @@ namespace CheeseMVC.Controllers
                 return View();    
             }
 
-            Cheeses.Add(name, description);
+            Cheese newCheese = new Cheese()
+            {
+                Name = name,
+                Description = description
+            };
+            Cheeses.Add(newCheese);
 
             return Redirect("/cheese");
         }
@@ -50,10 +56,10 @@ namespace CheeseMVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Remove(string name)
+        public IActionResult Remove(Cheese removeCheese)
         {
-
-            Cheeses.Remove(name);
+            //TODO remove functionality needs to be rebuilt with OOP model
+            
 
             return Redirect("/cheese");
         }

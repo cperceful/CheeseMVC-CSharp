@@ -1,4 +1,4 @@
-﻿
+﻿@using CheeseMVC.Models;
 
 <h1>My Cheese</h1>
 
@@ -11,8 +11,8 @@
 }
 
 <ul>
-    @foreach (KeyValuePair<string, string> cheese in ViewBag.cheeses) //variable must be called by ViewBag.variable
+    @foreach (Cheese cheese in ViewBag.cheeses) //variable must be called by ViewBag.variable
     {
-    <li>@cheese.Key, @cheese.Value</li>
+    <li>@cheese.Name, @cheese.Description</li>
     }
 </ul>
