@@ -59,7 +59,9 @@ namespace CheeseMVC.Controllers
         public IActionResult Remove(Cheese removeCheese)
         {
             //TODO remove functionality needs to be rebuilt with OOP model
+            Cheese cheese = removeCheese;
             
+            Cheeses.Remove(cheese);
 
             return Redirect("/cheese");
         }
