@@ -36,7 +36,7 @@ namespace CheeseMVC.Controllers
                 return View();    
             }
 
-            Cheese newCheese = new Cheese()
+            Cheese newCheese = new Cheese
             {
                 Name = name,
                 Description = description
@@ -44,6 +44,23 @@ namespace CheeseMVC.Controllers
             Cheeses.Add(newCheese);
 
             return Redirect("/cheese");
+        }
+
+        [HttpGet]
+        public IActionResult Remove()
+        {
+            ViewBag.title = "Remove Cheeses";
+            ViewBag.cheeses = Cheeses;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Remove(int cheeseId)
+        {
+            Cheeses.RemoveAll(x => x.CheeseId == cheeseId);
+
+            return Redirect("/");
+
         }
 
         
