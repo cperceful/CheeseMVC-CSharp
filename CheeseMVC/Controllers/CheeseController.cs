@@ -46,25 +46,7 @@ namespace CheeseMVC.Controllers
             return Redirect("/cheese");
         }
 
-        [HttpGet]
-        public IActionResult Remove()
-        {
-
-            ViewBag.cheeses = Cheeses;
-
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Remove(Cheese removeCheese)
-        {
-            //TODO remove functionality needs to be rebuilt with OOP model
-            Cheese cheese = removeCheese;
-            
-            Cheeses.Remove(cheese);
-
-            return Redirect("/cheese");
-        }
+        
 
         
     }
