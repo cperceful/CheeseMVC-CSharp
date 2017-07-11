@@ -1,5 +1,11 @@
 ﻿<h1>@ViewBag.title</h1>
 
+@if (ViewBag.cheeses.Count == 0)
+{
+    <p>You have removed all cheese</p>
+
+} else{ 
+
 <form method="post">
 
     <select name="cheeseId">
@@ -9,9 +15,12 @@
 
         }
 
-        
+
     </select>
 
-    <input type="submit" value="Remove This Cheese From My Sight"/>
+    <input type="submit" value="Remove This Cheese From My Sight" />
 
 </form>
+
+}
+
