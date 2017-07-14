@@ -33,7 +33,7 @@ namespace CheeseMVC.Controllers
         {
             
             CheeseData.Add(newCheese);
-
+            
             return Redirect("/cheese");
         }
 
@@ -45,15 +45,36 @@ namespace CheeseMVC.Controllers
             return View();
         }
 
+        
         [HttpPost]
         public IActionResult Remove(int cheeseId)
         {
             CheeseData.Remove(cheeseId);
 
+            
+
             return Redirect("/");
 
         }
 
+        [HttpGet]
+        public IActionResult Edit(int cheeseId)
+        {
+            ViewBag.cheese = CheeseData.GetById(cheeseId);
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Edit(string name, string description, int cheeseId)
+        {
+
+            Cheese editCheese = CheeseData.GetById(cheeseId);
+
+            editCheese.Name = name;
+            editCheese.Description = description;
+
+            return View();
+        }
         
 
         
