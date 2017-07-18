@@ -21,6 +21,10 @@ namespace CheeseMVC.ViewModels
         [Required]
         public CheeseType Type { get; set; }
 
+        [Required]
+        [Range(1, 5)]
+        public int Rating { get; set; }
+
         public List<SelectListItem> CheeseTypes { get; set; }
 
         public AddCheeseViewModel()
@@ -44,6 +48,19 @@ namespace CheeseMVC.ViewModels
                 Value = ((int)CheeseType.Fake).ToString(),
                 Text = CheeseType.Fake.ToString()
             });
+        }
+
+        public void CreateCheese()
+        {
+            Cheese cheese = new Cheese
+            {
+                Name = Name,
+                Description = Description,
+                Type = Type,
+                Rating = Rating
+            };
+
+            CheeseData.Add(cheese);
         }
     }
 }
