@@ -1,8 +1,22 @@
-﻿<h1>Edit Cheese @ViewBag.cheese.Name.ToUpper() (id = @ViewBag.cheese.CheeseId)</h1>
+﻿@using CheeseMVC.ViewModels
+@model AddEditCheeseViewModel
+
+<h1>Edit Cheese @Model.Name.ToUpper() (id = @Model.CheeseId)</h1>
 
 <form method="post">
-    <input type="text" name="name" value="@ViewBag.cheese.Name" />
-    <input type="text" name="description" value="@ViewBag.cheese.Description" />
-    <input type="hidden" value="@ViewBag.cheese.CheeseId" name="id"/>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input class="form-control" asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input class="form-control" asp-for="Description" />
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Type"></label>
+        <select class="form-control" asp-for="Type" asp-items="@Model.CheeseTypes"></select>
+    </div>
     <input type="submit" value="Edit Cheese" />
 </form>

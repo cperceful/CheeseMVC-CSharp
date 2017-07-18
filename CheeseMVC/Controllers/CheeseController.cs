@@ -75,21 +75,31 @@ namespace CheeseMVC.Controllers
         [Route("/cheese/edit/{cheeseId}")] 
         public IActionResult Edit(int cheeseId)
         {
-            ViewBag.cheese = CheeseData.GetById(cheeseId);
-            return View();
+            AddEditCheeseViewModel addEditCheeseViewModel = new AddEditCheeseViewModel(cheeseId);          
+
+            
+            return View(addEditCheeseViewModel);
         }
 
         [HttpPost]
         [Route("cheese/edit/{cheeseId}")]
-        public IActionResult Edit(string name, string description, int cheeseId)
+        public IActionResult Edit(AddEditCheeseViewModel addEditCheeseViewModel)
         {
 
-            Cheese editCheese = CheeseData.GetById(cheeseId);
+            Cheese editCheese = CheeseData.GetById(addEditCheeseViewModel.CheeseId);
 
-            editCheese.Name = name;
-            editCheese.Description = description;
+            if (ModelState.IsValid)
+            {
+                editCheese.Name = addEditCheeseViewModel.Name;
+                editCheese.Description = addEditCheeseViewModel.Description;
+                editCheese.Type = addEditCheeseViewModel.Type;
 
-            return Redirect("/");
+                return Redirect("/");
+            }
+
+            return View(addEditCheeseViewModel);
+
+            
         }
         
 
