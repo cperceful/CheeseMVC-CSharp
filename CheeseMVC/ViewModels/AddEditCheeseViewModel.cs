@@ -13,16 +13,16 @@ namespace CheeseMVC.ViewModels
 
         public AddEditCheeseViewModel() : base() { }
 
-        public AddEditCheeseViewModel(int cheeseId) : base()
-        {
+        //public AddEditCheeseViewModel(int cheeseId) : base()
+        //{
 
-            Cheese cheese = CheeseData.GetById(cheeseId);
-            Name = cheese.Name;
-            Description = cheese.Description;
-            Type = cheese.Type;
-            CheeseId = cheese.CheeseId;
+        //    Cheese cheese = CheeseData.GetById(cheeseId);
+        //    Name = cheese.Name;
+        //    Description = cheese.Description;
+        //    Type = cheese.Type;
+        //    CheeseId = cheese.CheeseId;
 
-        }
+        //}
 
     }
 }

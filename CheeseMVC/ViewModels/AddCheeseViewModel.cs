@@ -49,18 +49,7 @@ namespace CheeseMVC.ViewModels
                 Text = CheeseType.Fake.ToString()
             });
         }
+        
 
-        public void CreateCheese()
-        {
-            Cheese cheese = new Cheese
-            {
-                Name = Name,
-                Description = Description,
-                Type = Type,
-                Rating = Rating
-            };
-
-            CheeseData.Add(cheese);
-        }
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CheeseMVC.Models;
 using CheeseMVC.ViewModels;
+using CheeseMVC.Data;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,13 +13,19 @@ namespace CheeseMVC.Controllers
 {
     public class CheeseController : Controller
     {
-       
+
+        private CheeseDbContext context;
+
+        public CheeseController(CheeseDbContext dbContext)
+        {
+            context = dbContext; //this creates the controller receiving an instance of CheeseDbContext
+        }
 
         // GET: /<controller>/
         public IActionResult Index()
         {
-         
-            List<Cheese> cheeses = CheeseData.GetAll();
+
+            List<Cheese> cheeses = context.Cheeses.ToList();
 
             return View(cheeses);
         }
@@ -36,7 +43,16 @@ namespace CheeseMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                addCheeseViewModel.CreateCheese();
+                Cheese newCheese = new Cheese
+                {
+                    Name = addCheeseViewModel.Name,
+                    Description = addCheeseViewModel.Description,
+                    Type = addCheeseViewModel.Type,
+                    Rating = addCheeseViewModel.Rating
+                };
+
+                context.Cheeses.Add(newCheese);
+                context.SaveChanges();
 
                 return Redirect("/cheese");
             }
@@ -48,7 +64,7 @@ namespace CheeseMVC.Controllers
         public IActionResult Remove()
         {
             ViewBag.title = "Remove Cheeses";
-            List<Cheese> cheeses = CheeseData.GetAll();
+            List<Cheese> cheeses = context.Cheeses.ToList();
             return View(cheeses);
         }
 
@@ -56,9 +72,9 @@ namespace CheeseMVC.Controllers
         [HttpPost]
         public IActionResult Remove(int cheeseId)
         {
-            CheeseData.Remove(cheeseId);
-
-            
+            Cheese cheese = context.Cheeses.Single(x => x.ID == cheeseId);
+            context.Cheeses.Remove(cheese);
+            context.SaveChanges();
 
             return Redirect("/");
 
@@ -68,7 +84,15 @@ namespace CheeseMVC.Controllers
         [Route("/cheese/edit/{cheeseId}")] 
         public IActionResult Edit(int cheeseId)
         {
-            AddEditCheeseViewModel addEditCheeseViewModel = new AddEditCheeseViewModel(cheeseId);          
+            Cheese cheese = context.Cheeses.Single(x => x.ID == cheeseId);
+            AddEditCheeseViewModel addEditCheeseViewModel = new AddEditCheeseViewModel
+            {
+                Name = cheese.Name,
+                Description = cheese.Description,
+                Type = cheese.Type,
+                Rating = cheese.Rating,
+                CheeseId = cheese.ID
+            };          
 
             
             return View(addEditCheeseViewModel);
@@ -79,7 +103,9 @@ namespace CheeseMVC.Controllers
         public IActionResult Edit(AddEditCheeseViewModel addEditCheeseViewModel)
         {
 
-            Cheese editCheese = CheeseData.GetById(addEditCheeseViewModel.CheeseId);
+            //Cheese editCheese = CheeseData.GetById(addEditCheeseViewModel.CheeseId);
+
+            Cheese editCheese = context.Cheeses.Single(x => x.ID == addEditCheeseViewModel.CheeseId);
 
             if (ModelState.IsValid)
             {
@@ -87,6 +113,8 @@ namespace CheeseMVC.Controllers
                 editCheese.Description = addEditCheeseViewModel.Description;
                 editCheese.Type = addEditCheeseViewModel.Type;
                 editCheese.Rating = addEditCheeseViewModel.Rating;
+
+                context.SaveChanges();
 
                 return Redirect("/");
             }
