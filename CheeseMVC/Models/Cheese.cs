@@ -12,11 +12,15 @@ namespace CheeseMVC.Models
 
         public string Description { get; set; }
 
-        public CheeseType Type { get; set; }
+        public CheeseCategory Category { get; set; }
+
+        public int CategoryID { get; set; }
 
         public int Rating { get; set; }
 
         public int ID { get; set; } //this will be set by DbContext
+
+
 
         
 

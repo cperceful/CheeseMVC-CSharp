@@ -13,6 +13,8 @@ namespace CheeseMVC.ViewModels
 
         public AddEditCheeseViewModel() : base() { }
 
+        public AddEditCheeseViewModel(IEnumerable<CheeseCategory> categories) : base(categories) { }
+
         //public AddEditCheeseViewModel(int cheeseId) : base()
         //{
 

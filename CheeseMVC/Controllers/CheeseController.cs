@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using CheeseMVC.Models;
 using CheeseMVC.ViewModels;
 using CheeseMVC.Data;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,7 +26,7 @@ namespace CheeseMVC.Controllers
         public IActionResult Index()
         {
 
-            List<Cheese> cheeses = context.Cheeses.ToList();
+            IList<Cheese> cheeses = context.Cheeses.Include(x => x.Category).ToList();
 
             return View(cheeses);
         }
@@ -33,7 +34,7 @@ namespace CheeseMVC.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            AddCheeseViewModel addCheeseViewModel = new AddCheeseViewModel();
+            AddCheeseViewModel addCheeseViewModel = new AddCheeseViewModel(context.Categories.ToList());
 
             return View(addCheeseViewModel);
         }
@@ -41,13 +42,16 @@ namespace CheeseMVC.Controllers
         [HttpPost]
         public IActionResult Add(AddCheeseViewModel addCheeseViewModel)
         {
+            
             if (ModelState.IsValid)
             {
+                CheeseCategory newCategory = context.Categories.Single(x => x.ID == addCheeseViewModel.CategoryID);
+                
                 Cheese newCheese = new Cheese
                 {
                     Name = addCheeseViewModel.Name,
                     Description = addCheeseViewModel.Description,
-                    Type = addCheeseViewModel.Type,
+                    Category = newCategory,
                     Rating = addCheeseViewModel.Rating
                 };
 
@@ -84,12 +88,13 @@ namespace CheeseMVC.Controllers
         [Route("/cheese/edit/{cheeseId}")] 
         public IActionResult Edit(int cheeseId)
         {
-            Cheese cheese = context.Cheeses.Single(x => x.ID == cheeseId);
-            AddEditCheeseViewModel addEditCheeseViewModel = new AddEditCheeseViewModel
+            Cheese cheese = context.Cheeses.Include(x => x.Category).Single(x => x.ID == cheeseId);
+
+            AddEditCheeseViewModel addEditCheeseViewModel = new AddEditCheeseViewModel(context.Categories.ToList())
             {
                 Name = cheese.Name,
                 Description = cheese.Description,
-                Type = cheese.Type,
+                CategoryID = cheese.CategoryID,
                 Rating = cheese.Rating,
                 CheeseId = cheese.ID
             };          
@@ -105,13 +110,14 @@ namespace CheeseMVC.Controllers
 
             //Cheese editCheese = CheeseData.GetById(addEditCheeseViewModel.CheeseId);
 
-            Cheese editCheese = context.Cheeses.Single(x => x.ID == addEditCheeseViewModel.CheeseId);
+            Cheese editCheese = context.Cheeses.Include(x => x.Category).Single(x => x.ID == addEditCheeseViewModel.CheeseId);
+            CheeseCategory newCategory = context.Categories.Single(x => x.ID == addEditCheeseViewModel.CategoryID);
 
             if (ModelState.IsValid)
             {
                 editCheese.Name = addEditCheeseViewModel.Name;
                 editCheese.Description = addEditCheeseViewModel.Description;
-                editCheese.Type = addEditCheeseViewModel.Type;
+                editCheese.Category = newCategory;
                 editCheese.Rating = addEditCheeseViewModel.Rating;
 
                 context.SaveChanges();
