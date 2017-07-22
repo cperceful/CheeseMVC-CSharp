@@ -20,6 +20,8 @@ namespace CheeseMVC.Models
 
         public int ID { get; set; } //this will be set by DbContext
 
+        public IList<CheeseMenu> CheeseMenus { get; set; }
+
 
 
         
